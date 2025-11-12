@@ -1,0 +1,12 @@
+{
+  "title": "TradingBot",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "Orders",
+      "targets": [
+        { "expr": "tradingbot_alerts_received_total", "legendFormat": "Alerts" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=67", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tradingbot"
+version = "0.1.0"
+description = "TradingView to Coinbase automated trading backend"
+requires-python = ">=3.11"
+authors = [{name = "Your Name"}]
+readme = "README.md"
+license = {text = "MIT"}
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic-settings",
+    "sqlalchemy>=2.0",
+    "alembic",
+    "psycopg[binary]",
+    "celery[redis]",
+    "redis",
+    "httpx",
+    "python-dotenv",
+    "prometheus-client",
+    "loguru",
+    "python-json-logger",
+    "tenacity",
+    "orjson",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "responses",
+    "pytest-cov",
+    "ruff",
+    "black",
+    "mypy",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 100
+select = ["E", "F", "I", "B", "UP", "C4"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.mypy]
+python_version = "3.11"
+strict = false
+plugins = ["sqlalchemy.ext.mypy.plugin"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app", "app.*"]

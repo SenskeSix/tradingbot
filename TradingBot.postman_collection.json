@@ -1,0 +1,28 @@
+{
+  "info": {
+    "name": "TradingBot API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "TradingView Webhook",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "X-Signature", "value": "<computed>"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"symbol\": \"BTC-USD\",\n  \"side\": \"buy\",\n  \"price\": 20000\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/webhook/tradingview",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["webhook", "tradingview"]
+        }
+      }
+    }
+  ]
+}

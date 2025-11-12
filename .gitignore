@@ -1,0 +1,14 @@
+.venv/
+.env
+__pycache__/
+*.pyc
+.mypy_cache/
+.pytest_cache/
+uvicorn.log
+celery-worker.log
+test.db
+*.sqlite3
+*.db
+dist/
+build/
+*.egg-info/
