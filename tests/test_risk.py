@@ -19,7 +19,9 @@ def test_position_limit_block():
     try:
         settings = get_settings()
         engine_risk = RiskEngine(session, settings)
-        result = engine_risk.check_position_limits("BTC-USD", proposed_qty=10, price=10000, side="buy")
+        result = engine_risk.check_position_limits(
+            "BTC-USD", proposed_qty=10, price=10000, side="buy"
+        )
         assert not result.ok
     finally:
         session.close()

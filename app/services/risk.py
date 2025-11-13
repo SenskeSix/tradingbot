@@ -25,7 +25,9 @@ class RiskEngine:
         # In paper mode we use configured cash; in live mode we assume same for now
         return float(self.settings.paper_cash_usd)
 
-    def check_position_limits(self, symbol: str, proposed_qty: float, price: float, side: str) -> RiskResult:
+    def check_position_limits(
+        self, symbol: str, proposed_qty: float, price: float, side: str
+    ) -> RiskResult:
         limit = self._portfolio_notional() * self.settings.max_pos_pct
         stmt = select(models.Position).where(models.Position.symbol == symbol)
         position = self.db.execute(stmt).scalar_one_or_none()

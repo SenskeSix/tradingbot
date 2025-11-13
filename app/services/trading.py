@@ -79,7 +79,13 @@ class TradingService:
                 self._live_order(alert, qty, limit_price, sizing_mode, side)
 
     def _paper_fill(
-        self, alert: models.Alert, qty: float, limit_price: float, fill_price: float, sizing_mode: str, side: str
+        self,
+        alert: models.Alert,
+        qty: float,
+        limit_price: float,
+        fill_price: float,
+        sizing_mode: str,
+        side: str,
     ) -> None:
         order = models.Order(
             alert_id=alert.id,
@@ -117,7 +123,9 @@ class TradingService:
             {"symbol": alert.symbol, "qty": qty, "side": side, "sizing": sizing_mode},
         )
 
-    def _live_order(self, alert: models.Alert, qty: float, limit_price: float, sizing_mode: str, side: str) -> None:
+    def _live_order(
+        self, alert: models.Alert, qty: float, limit_price: float, sizing_mode: str, side: str
+    ) -> None:
         response = self.coinbase_client.place_order(alert.symbol, side, qty, limit_price)
         order = models.Order(
             alert_id=alert.id,
@@ -133,7 +141,13 @@ class TradingService:
         orders_sent.inc()
         self.risk.record_risk_event(
             "live_order",
-            {"symbol": alert.symbol, "qty": qty, "side": side, "resp": response, "sizing": sizing_mode},
+            {
+                "symbol": alert.symbol,
+                "qty": qty,
+                "side": side,
+                "resp": response,
+                "sizing": sizing_mode,
+            },
         )
 
     def _risk_block(self, alert: models.Alert, reason: str) -> None:

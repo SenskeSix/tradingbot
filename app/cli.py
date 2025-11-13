@@ -31,7 +31,9 @@ def report(day: str | None) -> None:
         target_date = dt.datetime.fromisoformat(day).date()
         report_rows = daily_pnl_report(session, target_date)
         for row in report_rows:
-            print(f"{row['date']} {row['symbol']}: realized={row['realized_pnl']} unrealized={row['unrealized_pnl']}")
+            print(
+                f"{row['date']} {row['symbol']}: realized={row['realized_pnl']} unrealized={row['unrealized_pnl']}"
+            )
     finally:
         session.close()
 

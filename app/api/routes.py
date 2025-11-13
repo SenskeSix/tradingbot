@@ -29,11 +29,15 @@ async def _verify_signature(request: Request, settings: Settings) -> bytes:
     sig_header = request.headers.get("X-Signature") or request.query_params.get("sig")
     if sig_header:
         if not verify_hmac(raw_body, settings.webhook_secret, sig_header):
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid signature")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid signature"
+            )
     else:
         auth_header = request.headers.get("Authorization", "")
         if auth_header != f"Bearer {settings.webhook_secret}":
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="missing signature")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="missing signature"
+            )
     return raw_body
 
 
@@ -48,7 +52,9 @@ async def tradingview_webhook(
     try:
         payload = schemas.AlertIn.model_validate_json(raw_body)
     except ValidationError as exc:
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=exc.errors()) from exc
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=exc.errors()
+        ) from exc
 
     alert = models.Alert(
         id=payload.id,
@@ -95,10 +101,16 @@ async def healthz(
     finally:
         await client.close()
 
-    return schemas.HealthResponse(status="ok", build_sha=build_sha, db=db_status, redis=redis_status)
+    return schemas.HealthResponse(
+        status="ok", build_sha=build_sha, db=db_status, redis=redis_status
+    )
 
 
-@router.get("/reports/daily", response_model=list[schemas.ReportResponse], dependencies=[Depends(verify_internal_token)])
+@router.get(
+    "/reports/daily",
+    response_model=list[schemas.ReportResponse],
+    dependencies=[Depends(verify_internal_token)],
+)
 async def daily_report(
     db: Session = Depends(deps.get_db_dep),
 ):

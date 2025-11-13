@@ -49,10 +49,14 @@ class CoinbaseClient:
             "Content-Type": "application/json",
         }
 
-    def _request(self, method: str, path: str, json_body: Dict[str, Any] | None = None) -> Dict[str, Any]:
+    def _request(
+        self, method: str, path: str, json_body: Dict[str, Any] | None = None
+    ) -> Dict[str, Any]:
         body_str = json.dumps(json_body) if json_body else ""
         headers = self._signed_headers(method, path, body_str)
-        response = self.client.request(method, f"{COINBASE_API_URL}{path}", headers=headers, json=json_body)
+        response = self.client.request(
+            method, f"{COINBASE_API_URL}{path}", headers=headers, json=json_body
+        )
         if response.status_code == 429:
             raise CoinbaseRateLimitError("rate limited")
         response.raise_for_status()
@@ -66,7 +70,9 @@ class CoinbaseClient:
     def get_best_bid_ask(self, symbol: str) -> BidAsk:
         data = self._request("GET", f"/brokerage/products/{symbol}")
         price = data.get("price") or {}
-        return BidAsk(best_bid=float(price.get("best_bid", 0)), best_ask=float(price.get("best_ask", 0)))
+        return BidAsk(
+            best_bid=float(price.get("best_bid", 0)), best_ask=float(price.get("best_ask", 0))
+        )
 
     @retry(wait=wait_exponential(multiplier=1, min=1, max=4), stop=stop_after_attempt(3))
     def place_order(

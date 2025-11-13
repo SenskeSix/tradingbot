@@ -9,7 +9,9 @@ logger = logging.getLogger(__name__)
 
 
 class MarketDataService:
-    def __init__(self, client: CoinbaseClient | None = None, settings: Settings | None = None) -> None:
+    def __init__(
+        self, client: CoinbaseClient | None = None, settings: Settings | None = None
+    ) -> None:
         self.client = client or CoinbaseClient(settings)
         self.settings = settings or get_settings()
 
