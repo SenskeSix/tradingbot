@@ -23,6 +23,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.api
+    env_file: .env
     depends_on:
       db:
         condition: service_healthy
@@ -36,6 +37,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.worker
+    env_file: .env
     depends_on:
       - api
 
@@ -43,6 +45,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.worker
+    env_file: .env
     command: ["celery", "-A", "app.workers.tasks.celery_app", "beat", "-l", "info"]
     depends_on:
       - redis
