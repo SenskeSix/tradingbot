@@ -56,6 +56,27 @@ def test_webhook_invalid_signature():
     assert response.status_code == 401
 
 
+def test_webhook_token_query_auth(monkeypatch):
+    body = json.dumps(
+        {
+            "id": "123e4567-e89b-12d3-a456-426614174555",
+            "symbol": "BTC-USD",
+            "side": "buy",
+            "price": 21000,
+        }
+    ).encode()
+
+    mock_delay = mock.Mock()
+    monkeypatch.setattr("app.api.routes.enqueue_trade_task", mock.Mock(delay=mock_delay))
+
+    response = client.post(
+        "/webhook/tradingview?token=testsecret",
+        data=body,
+    )
+    assert response.status_code == 200
+    mock_delay.assert_called_once()
+
+
 def test_webhook_duplicate_alert(monkeypatch):
     body = json.dumps(
         {

@@ -38,6 +38,8 @@ curl -X POST http://localhost:8000/webhook/tradingview \
   -d "$BODY"
 ```
 
+> Tip: TradingView’s native UI cannot set custom headers, so in production append `?token=<WEBHOOK_SECRET>` to the webhook URL (e.g. `https://tradingbot.example.com/webhook/tradingview?token=...`). The API still supports signed `X-Signature` headers if you forward alerts through a relay that can add them.
+
 ## Services
 
 - `POST /webhook/tradingview` – Validates HMAC + schema, inserts alert, enqueues Celery trade task.
@@ -74,7 +76,7 @@ The script builds random BUY/SELL alerts for BTC/SOL/SUI, signs them with `WEBHO
 
 ## TradingView Alert Setup
 
-See `ALERTS.md` for JSON templates, signature instructions, and Pine Script example.
+See `ALERTS.md` for JSON templates, query parameter usage, and Pine Script example.
 
 ## Deployment Notes
 

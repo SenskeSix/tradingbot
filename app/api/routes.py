@@ -34,10 +34,13 @@ async def _verify_signature(request: Request, settings: Settings) -> bytes:
             )
     else:
         auth_header = request.headers.get("Authorization", "")
-        if auth_header != f"Bearer {settings.webhook_secret}":
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="missing signature"
-            )
+        token = request.query_params.get("token") or request.query_params.get("auth")
+        if auth_header == f"Bearer {settings.webhook_secret}" or token == settings.webhook_secret:
+            return raw_body
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="missing signature",
+        )
     return raw_body
 
 

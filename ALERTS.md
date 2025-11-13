@@ -3,11 +3,11 @@
 ## Webhook URL
 
 ```
-https://<host>/webhook/tradingview?sig=<sha256>
+https://<host>/webhook/tradingview?token=<WEBHOOK_SECRET>
 ```
 
-- Compute `sig = sha256(rawBody, WEBHOOK_SECRET)` and set it as header `X-Signature` (preferred).
-- Fallback: `Authorization: Bearer <WEBHOOK_SECRET>` (dev only).
+- TradingView cannot add custom headers, so append `?token=<WEBHOOK_SECRET>` to the webhook URL for auth.
+- If you have a relay that can sign requests, you may still send `X-Signature` (HMAC) or `Authorization: Bearer <WEBHOOK_SECRET>` headers instead of the query param.
 
 ## JSON Template
 
